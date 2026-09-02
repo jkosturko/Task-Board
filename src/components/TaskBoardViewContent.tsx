@@ -583,6 +583,14 @@ const TaskBoardViewContent: React.FC<{ app: App; plugin: TaskBoard; boardConfigs
 			})
 			item.setChecked(plugin.settings.data.globalSettings.visiblePropertiesList?.includes(taskPropertiesNames.FullPath))
 		});
+		propertyMenu.addItem((item) => {
+			item.setTitle(t("heading"));
+			item.onClick(async () => {
+				togglePropertyNameInSettings(taskPropertiesNames.Heading);
+
+			})
+			item.setChecked(plugin.settings.data.globalSettings.visiblePropertiesList?.includes(taskPropertiesNames.Heading))
+		});
 
 		propertyMenu.addSeparator();
 

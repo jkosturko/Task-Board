@@ -68,6 +68,7 @@ export enum taskPropertiesNames {
 	FilePathInHeader = "filePathInHeader",
 	ParentFolder = "parentFolder",
 	FullPath = "fullPath",
+	Heading = "precedingHeader",
 }
 
 export enum DEFAULT_TASK_NOTE_FRONTMATTER_KEYS {

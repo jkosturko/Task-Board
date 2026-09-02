@@ -1244,6 +1244,12 @@ const TaskItemV2: React.FC<TaskProps> = ({ dataAttributeIndex, plugin, task, act
 										<div className='taskItemFooterPropertyContainerValue' aria-label={task.filePath}>{task.filePath.split('/').slice(0, -1).join("/") ? task.filePath.split('/').slice(0, -1).join("/") : "Vault root"}</div>
 									</div>
 								)}
+								{globalSettings.visiblePropertiesList?.includes(taskPropertiesNames.Heading) && task.precedingHeader && (
+									<div className="taskItemFooterPropertyContainer">
+										<div className='taskItemFooterPropertyContainerLabel'>{t("heading")}</div>
+										<div className='taskItemFooterPropertyContainerValue' aria-label={task.precedingHeader}>{task.precedingHeader}</div>
+									</div>
+								)}
 							</div>
 						</>
 					)}
