@@ -762,6 +762,17 @@ const TaskItem: React.FC<TaskCardComponentProps> = ({ dataAttributeIndex, plugin
 			});
 		});
 
+		// Clear the scheduled date without opening the date picker. Passing an
+		// empty value makes sanitizeScheduledDate strip the marker from the line.
+		taskItemMenu.addItem((it) => {
+			it.setIcon("calendar-x");
+			it.setTitle(t("clear-scheduled-date"));
+			it.setDisabled(!task.scheduledDate);
+			it.onClick(async () => {
+				updateTaskItemDate(plugin, task, task, UniversalDateOptions.scheduledDate, "");
+			});
+		});
+
 		taskItemMenu.addSeparator();
 
 		taskItemMenu.addItem((item) => {
