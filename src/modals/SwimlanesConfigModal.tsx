@@ -120,6 +120,7 @@ export class SwimlanesConfigModal extends Modal {
 			{ value: 'status', label: t('status') },
 			{ value: 'filePath', label: t("file-path") },
 			{ value: 'folderPath', label: t("folder-path") },
+			{ value: 'heading', label: t("heading") },
 		];
 
 		new Setting(container)
@@ -325,6 +326,17 @@ export class SwimlanesConfigModal extends Modal {
 					onSelectCallback,
 					this.app,
 				);
+			} else if (this.property === 'heading') {
+				const input = row.createEl('input', {
+					attr: { type: 'text', placeholder: t('enter-heading') },
+					cls: 'swimlanesConfigSortRowInput',
+				});
+				input.value = sortRow.value ?? '';
+				input.addEventListener('input', (e) => {
+					this.customSortOrder[rowIndex].value =
+						(e.target as HTMLInputElement).value ?? "";
+					this.edited = true;
+				});
 			} else if (this.property === 'priority') {
 				const prioritySelect = row.createEl('select', {
 					cls: 'swimlanesConfigSortRowDropdown',

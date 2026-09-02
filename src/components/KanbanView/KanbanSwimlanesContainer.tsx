@@ -218,6 +218,8 @@ const KanbanSwimlanesContainer: React.FC<KanbanSwimlanesContainerProps> = ({
 				const parts = swimlaneItemValue.split("/");
 				swimlaneName = parts.at(-2) ?? swimlaneItemValue;
 				swimlaneName = swimlaneName + "/";
+			} else if (property === 'heading' && swimlaneItemValue.trim() === "") {
+				swimlaneName = "No heading";
 			}
 			const isSwimlaneMinimized = minimized?.includes(swimlaneName) ?? false;
 
@@ -516,6 +518,11 @@ function getPropertyValues(
 				const folderPath = parts.slice(0, -1).join("/");
 				values = [folderPath + "/" || ""];
 			}
+			break;
+		case 'heading':
+			// Always emit a value so that tasks sitting above the first heading
+			// collect into their own swimlane instead of vanishing.
+			values = [task?.precedingHeader ?? ""];
 			break;
 
 		// case 'project':

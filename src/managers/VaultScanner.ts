@@ -52,6 +52,44 @@ import { parse } from "date-fns/parse";
 import { isValid } from "date-fns";
 
 /**
+ * Maps every line of a file to the markdown heading it sits under.
+ *
+ * Built once per file so that tagging N tasks with their heading stays O(lines)
+ * rather than N upward scans. Lines inside fenced code blocks are skipped, so a
+ * `# comment` in a code sample is never mistaken for a heading.
+ *
+ * @param lines The file split on newlines.
+ * @returns An array parallel to `lines`; each entry is the heading text in
+ * effect at that line, or "" when the line sits above the first heading.
+ */
+function buildHeadingIndex(lines: string[]): string[] {
+	const headingForLine: string[] = new Array(lines.length).fill("");
+	let current = "";
+	let insideFence = false;
+
+	for (let i = 0; i < lines.length; i++) {
+		const line = lines[i];
+
+		if (/^\s{0,3}(```|~~~)/.test(line)) {
+			insideFence = !insideFence;
+			headingForLine[i] = current;
+			continue;
+		}
+
+		if (!insideFence) {
+			const heading = line.match(/^(#{1,6})\s+(.*)$/);
+			if (heading) {
+				current = heading[2].trim();
+			}
+		}
+
+		headingForLine[i] = current;
+	}
+
+	return headingForLine;
+}
+
+/**
  * Creates a vault scanner mechanism and holds the latest tasksCache inside RAM.
  * @param app The Obsidian app instance
  * @param plugin The TaskBoard plugin instance
@@ -122,6 +160,7 @@ export default class VaultScanner {
 			if (fileContent == null) return "false";
 
 			const lines = fileContent.split("\n");
+			const headingForLine = buildHeadingIndex(lines);
 
 			const oldPendingFileCache =
 				this.tasksCache.Pending[fileNameWithPath];
@@ -442,6 +481,8 @@ export default class VaultScanner {
 											.map((id) => id.trim())
 									: [],
 								filePath: fileNameWithPath,
+								precedingHeader:
+									headingForLine[lineIndex] ?? "",
 								taskLocation: {
 									startLine: lineIndex + 1,
 									startCharIndex: 0,

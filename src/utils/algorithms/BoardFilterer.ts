@@ -287,6 +287,9 @@ function getTaskPropertyValue(task: taskItem, property: string): any {
 			const parts = task.filePath.split("/");
 			const folderPath = parts.slice(0, -1).join("/");
 			return folderPath + "/" || "";
+		case "heading":
+		case "precedingHeader":
+			return task.precedingHeader || "";
 		case "startTime":
 			return task.time ? task.time.split("-")[0].trim() : "";
 		case "reminder":

@@ -634,7 +634,9 @@ const en: Lang = {
 	"hidden": "Hidden",
 	"folder-path": "Folder path",
 	"enter-file-path": "Enter full file path",
-	"enter-folder-path": "Enter full folder path"
+	"enter-folder-path": "Enter full folder path",
+	"heading": "Heading",
+	"enter-heading": "Enter heading text"
 };
 
 export default en;

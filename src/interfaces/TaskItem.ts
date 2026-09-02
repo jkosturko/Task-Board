@@ -23,6 +23,7 @@ export interface taskItem {
 	due: string;
 	filePath: string;
 	taskLocation: taskLocation;
+	precedingHeader?: string; // Nearest markdown heading above the task, "" when there is none
 	// onCompletion?: number;
 	dependsOn?: string[]; // Array of task IDs that this task depends on
 	reminder?: string; // A date-time value.
