@@ -636,7 +636,8 @@ const en: Lang = {
 	"enter-file-path": "Enter full file path",
 	"enter-folder-path": "Enter full folder path",
 	"heading": "Heading",
-	"enter-heading": "Enter heading text"
+	"enter-heading": "Enter heading text",
+	"document-order": "Document order"
 };
 
 export default en;

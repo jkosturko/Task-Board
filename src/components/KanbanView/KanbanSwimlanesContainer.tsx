@@ -163,6 +163,42 @@ const KanbanSwimlanesContainer: React.FC<KanbanSwimlanesContainerProps> = ({
 					value: val,
 					index: idx + 1,
 				}));
+		} else if (sortCriteria === 'documentOrder') {
+			// Order swimlanes the way they appear in the notes. Each value is
+			// placed at the earliest (file, line) of any task carrying it, so
+			// for headings the lanes come out in the order they are written.
+			const firstSeen = new Map<string, { file: string; line: number }>();
+			swimlaneColumnTasks.forEach((columnTasks) => {
+				columnTasks.forEach((task: taskItem) => {
+					const line = task.taskLocation?.startLine ?? Number.MAX_SAFE_INTEGER;
+					getPropertyValues(task, property, customValue).forEach((value: string) => {
+						const current = firstSeen.get(value);
+						if (
+							!current ||
+							task.filePath < current.file ||
+							(task.filePath === current.file && line < current.line)
+						) {
+							firstSeen.set(value, { file: task.filePath, line });
+						}
+					});
+				});
+			});
+
+			sortedSwimlaneValues = uniqueSwimlanValues
+				.sort((a, b) => {
+					const first = firstSeen.get(a);
+					const second = firstSeen.get(b);
+					if (!first) return 1;
+					if (!second) return -1;
+					return (
+						first.file.localeCompare(second.file) ||
+						first.line - second.line
+					);
+				})
+				.map((val, idx) => ({
+					value: val,
+					index: idx + 1,
+				}));
 		}
 
 		// Create swimlane rows with tasks organized by column

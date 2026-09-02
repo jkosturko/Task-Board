@@ -171,6 +171,7 @@ export class SwimlanesConfigModal extends Modal {
 		const sortOptions = [
 			{ value: 'asc', label: t('ascending') },
 			{ value: 'desc', label: t('descending') },
+			{ value: 'documentOrder', label: t('document-order') },
 			{ value: 'custom', label: t('custom-sorting') },
 		];
 
